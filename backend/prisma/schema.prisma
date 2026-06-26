@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Herb {
+  id            String   @id @default(uuid())
+  name          String
+  scientificName String
+  family        String?
+  description   String   @db.Text
+  uses          Json     // { medicinal: [], culinary: [], other: [] }
+  growing       Json     // { climate, soilType, waterNeeds, sunlight, hardinessZones, plantingSeason }
+  care          Json     // { watering, fertilizing, pruning, pests: [] }
+  tags          String[]
+  images        Image[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([name])
+  @@index([scientificName])
+  @@index([tags])
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  publicId  String
+  caption   String?
+  type      String   // 'plant', 'flower', 'leaf', 'dried'
+  herbId    String
+  herb      Herb     @relation(fields: [herbId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([herbId])
+}
