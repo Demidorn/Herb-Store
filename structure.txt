@@ -1,0 +1,94 @@
+herb-encyclopedia-pwa/
+├── README.md
+├── .gitignore
+├── docker-compose.yml
+├── backend/
+│   ├── package.json
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── prisma/
+│   │   └── schema.prisma
+│   └── src/
+│       ├── index.js
+│       ├── config/
+│       │   ├── database.js
+│       │   └── cloudinary.js
+│       ├── controllers/
+│       │   └── herbController.js
+│       ├── routes/
+│       │   └── herbRoutes.js
+│       ├── middleware/
+│       │   ├── upload.js
+│       │   └── errorHandler.js
+│       ├── services/
+│       │   └── imageService.js
+│       └── utils/
+│           └── validators.js
+│
+└── frontend/
+    ├── package.json
+    ├── next.config.js
+    ├── tailwind.config.js
+    ├── postcss.config.js
+    ├── .env.local.example
+    ├── .gitignore
+    ├── public/
+    │   ├── manifest.json
+    │   ├── sw.js
+    │   ├── offline.html
+    │   └── icons/
+    │       ├── icon-72.png
+    │       ├── icon-96.png
+    │       ├── icon-128.png
+    │       ├── icon-144.png
+    │       ├── icon-152.png
+    │       ├── icon-192.png
+    │       ├── icon-384.png
+    │       └── icon-512.png
+    │
+    └── src/
+        ├── pages/
+        │   ├── _app.js
+        │   ├── _document.js
+        │   ├── index.js
+        │   ├── herbs/
+        │   │   ├── index.js
+        │   │   ├── [id].js
+        │   │   ├── create.js
+        │   │   └── edit/[id].js
+        │   └── api/
+        │       └── proxy.js
+        │
+        ├── components/
+        │   ├── Layout.js
+        │   ├── Header.js
+        │   ├── HerbCard.js
+        │   ├── HerbDetail.js
+        │   ├── HerbForm.js
+        │   ├── ImageGallery.js
+        │   ├── ImageUpload.js
+        │   ├── CameraCapture.js
+        │   ├── SearchBar.js
+        │   ├── FilterPanel.js
+        │   ├── OfflineIndicator.js
+        │   ├── InstallPrompt.js
+        │   └── LoadingSpinner.js
+        │
+        ├── hooks/
+        │   ├── useIndexedDB.js
+        │   ├── useOnlineStatus.js
+        │   ├── useCamera.js
+        │   └── usePWA.js
+        │
+        ├── lib/
+        │   ├── api.js
+        │   ├── indexedDB.js
+        │   ├── imageCompressor.js
+        │   └── utils.js
+        │
+        ├── styles/
+        │   └── globals.css
+        │
+        └── utils/
+            ├── constants.js
+            └── helpers.js
