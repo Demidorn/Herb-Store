@@ -2,7 +2,6 @@ import '../styles/globals.css';
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { initIndexedDB } from '../lib/indexedDB';
-import { registerSW } from 'next-pwa';
 
 function MyApp({ Component, pageProps }) {
   const [isReady, setIsReady] = useState(false);
@@ -13,19 +12,22 @@ function MyApp({ Component, pageProps }) {
       setIsReady(true);
     });
 
+    // NOTE: next-pwa automatically registers the service worker 
+    // based on your next.config.js settings. No manual registration needed!
+
     // Register service worker
-    if ('serviceWorker' in navigator) {
-      registerSW({
-        onNeedRefresh: () => {
-          if (confirm('New content available. Reload?')) {
-            window.location.reload();
-          }
-        },
-        onOfflineReady: () => {
-          console.log('App ready to work offline');
-        },
-      });
-    }
+    // if ('serviceWorker' in navigator) {
+    //   registerSW({
+    //     onNeedRefresh: () => {
+    //       if (confirm('New content available. Reload?')) {
+    //         window.location.reload();
+    //       }
+    //     },
+    //     onOfflineReady: () => {
+    //       console.log('App ready to work offline');
+    //     },
+    //   });
+    // }
   }, []);
 
   if (!isReady) {
