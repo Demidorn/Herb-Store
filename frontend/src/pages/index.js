@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HerbCard from '../components/HerbCard';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
@@ -63,8 +63,8 @@ export default function Home() {
 
         <div className="mb-6 flex flex-col md:flex-row gap-4">
           <SearchBar 
-            value={searchTerm}
-            onChange={setSearchTerm}
+            initialValue={searchTerm}
+            onSearch={setSearchTerm}
             placeholder="Search herbs..."
           />
           
