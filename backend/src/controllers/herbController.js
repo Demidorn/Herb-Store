@@ -1,5 +1,6 @@
 const prisma = require('../config/database');
 const { uploadToCloudinary, deleteFromCloudinary } = require('../services/imageService');
+const { validateHerbInput } = require('../utils/validators'); 
 
 // Get all herbs with filtering and pagination
 exports.getHerbs = async (req, res, next) => {
@@ -88,6 +89,11 @@ exports.getHerbById = async (req, res, next) => {
 // Create new herb
 exports.createHerb = async (req, res, next) => {
   try {
+    const { isValid, errors } = validateHerbInput(req.body, false);
+    if (!isValid) {
+      return res.status(400).json({ error: { message: 'Validation failed', details: errors } });
+    }
+
     const {
       name,
       scientificName,
@@ -101,13 +107,13 @@ exports.createHerb = async (req, res, next) => {
 
     const herb = await prisma.herb.create({
       data: {
-        name,
-        scientificName,
-        family,
-        description,
-        uses: JSON.parse(uses || '{}'),
-        growing: JSON.parse(growing || '{}'),
-        care: JSON.parse(care || '{}'),
+        name: name.trim(),
+        scientificName: scientificName?.trim() || null,
+        family: family?.trim() || null,
+        description: description.trim(),
+        uses: typeof uses === 'string' ? JSON.parse(uses) : (uses || {}),
+        growing: typeof growing === 'string' ? JSON.parse(growing) : (growing || {}),
+        care: typeof care === 'string' ? JSON.parse(care) : (care || {}),
         tags: tags ? (typeof tags === 'string' ? JSON.parse(tags) : tags) : [],
       },
     });
@@ -122,15 +128,25 @@ exports.createHerb = async (req, res, next) => {
 exports.updateHerb = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    const { isValid, errors } = validateHerbInput(req.body, true);
+    if (!isValid) {
+      return res.status(400).json({ error: { message: 'Validation failed', details: errors } });
+    }
+
     const updateData = { ...req.body };
 
+    // Clean up strings
+    if (updateData.name) updateData.name = updateData.name.trim();
+    if (updateData.scientificName) updateData.scientificName = updateData.scientificName.trim();
+    if (updateData.family) updateData.family = updateData.family.trim();
+    if (updateData.description) updateData.description = updateData.description.trim();
+
     // Parse JSON fields
-    if (updateData.uses) updateData.uses = JSON.parse(updateData.uses);
-    if (updateData.growing) updateData.growing = JSON.parse(updateData.growing);
-    if (updateData.care) updateData.care = JSON.parse(updateData.care);
-    if (updateData.tags && typeof updateData.tags === 'string') {
-      updateData.tags = JSON.parse(updateData.tags);
-    }
+    if (updateData.uses && typeof updateData.uses === 'string') updateData.uses = JSON.parse(updateData.uses);
+    if (updateData.growing && typeof updateData.growing === 'string') updateData.growing = JSON.parse(updateData.growing);
+    if (updateData.care && typeof updateData.care === 'string') updateData.care = JSON.parse(updateData.care);
+    if (updateData.tags && typeof updateData.tags === 'string') updateData.tags = JSON.parse(updateData.tags);
 
     const herb = await prisma.herb.update({
       where: { id },
