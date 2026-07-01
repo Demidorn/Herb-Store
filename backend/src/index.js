@@ -9,10 +9,17 @@ const { errorHandler } = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Define allowed origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://herb-store-theta.vercel.app', // Your live Vercel URL
+  process.env.FRONTEND_URL // Fallback to env variable if set
+].filter(Boolean); // This removes any 'undefined' values from the array
+
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(morgan('dev'));
