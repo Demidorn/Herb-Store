@@ -70,7 +70,7 @@ export default function Home() {
           
           <Link 
             href="/herbs/create"
-            className="flex items-center justify-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
+            className="flex items-center justify-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors md:-mt-4"
           >
             <FaPlus />
             <span>Add Herb</span>
