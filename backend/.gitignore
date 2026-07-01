@@ -33,8 +33,5 @@ lerna-debug.log*
 .vscode/
 .idea/
 
-# Prisma
-prisma/migrations/
-
 # Uploads
 uploads/
