@@ -26,6 +26,22 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.json({ 
+    message: '🌿 Herb Encyclopedia API is running!',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      herbs: '/api/herbs'
+    }
+  });
+});
+
+// Also handle HEAD requests (what Render uses)
+app.head('/', (req, res) => {
+  res.status(200).end();
+});
+
 // Routes
 app.use('/api/herbs', herbRoutes);
 
