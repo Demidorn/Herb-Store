@@ -1,7 +1,7 @@
 const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  // disable: false,
+  // disable: process.env.NODE_ENV === 'development',
+  disable: false,
   register: true,
   skipWaiting: true,
   runtimeCaching: [
@@ -19,7 +19,23 @@ const withPWA = require('@ducanh2912/next-pwa').default({
         },
       },
     },
+    {
+      // Cache API responses with NetworkFirst strategy
+      urlPattern: /\/api\/.*/i,
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "api-cache",
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24, // 1 day
+        },
+        networkTimeoutSeconds: 10,
+      },
+    },
   ],
+  // Exclude dynamic routes from caching
+  dynamicStartUrl: false,
+  buildExcludes: [/middleware-manifest\.json$/],
 });
 
 module.exports = withPWA({
@@ -32,5 +48,9 @@ module.exports = withPWA({
       },
     ],
     formats: ['image/avif', 'image/webp'],
+  },
+   // Don't cache create/edit pages
+  async rewrites() {
+    return [];
   },
 });
