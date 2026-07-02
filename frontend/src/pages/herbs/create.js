@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import HerbForm from '../../components/HerbForm';
-import { createHerb } from '../../lib/api';
+import { createHerb, uploadImages } from '../../lib/api';
 
 export default function CreateHerbPage() {
   const router = useRouter();
@@ -20,6 +20,7 @@ export default function CreateHerbPage() {
       // Upload images if any
       if (images && images.length > 0) {
         // Images will be uploaded in the form component
+        await uploadImages(herb.id, images);
       }
 
       router.push(`/herbs/${herb.id}`);
