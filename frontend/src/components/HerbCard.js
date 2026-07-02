@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function HerbCard({ herb }) {
-  const mainImage = herb.images?.[0]?.url || '/images/default-herb.jpg';
+  const mainImage = herb.images?.[0]?.url || '/images/default-herb.svg';
 
   return (
     <Link href={`/herbs/${herb.id}`} className="block group">
